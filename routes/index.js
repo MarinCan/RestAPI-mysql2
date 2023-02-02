@@ -1,27 +1,20 @@
 const express = require('express');
 const router = express.Router();
+const pool = require('../db')
+const employeesRoutes = require('./empleados')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.send('Home');
 });
 
-/* GET home page. */
-router.get('/empleados', function(req, res, next) {
-  res.send('Obteniendo empleados');
+router.get('/ping', async function(req, res, next) {
+  const [result] = await pool.query('SELECT 1 + 1 AS result')
+  // res.send('pong');
+  res.json(result[0]) 
+  // Recuerda: para acceder al valor de "1+1", se hace una lista del result ([result]) y se accede al elemento 0
 });
 
-router.post('/empleados', function(req, res, next) {
-  res.send('Creando empleados');
-});
-
-router.put('/empleados', function(req, res, next) {
-  res.send('Actualizando empleados');
-});
-
-router.delete('/empleados', function(req, res, next) {
-  res.send('Eliminando empleados');
-});
-
+router.use(employeesRoutes)
 
 module.exports = router;
