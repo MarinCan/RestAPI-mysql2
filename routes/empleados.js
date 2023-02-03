@@ -1,23 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db')
+const {getEmpleados, createEmpleados, updateEmpleados, deleteEmpleados} = require('../controllers/empleados.controller')
 
 
 /* GET home page. */
-router.get('/empleados', function(req, res, next) {
-    res.send('Obteniendo empleados');
-});
+// router.get('/empleados', function(req, res, next) {
+//     res.send('Obteniendo empleados');
+// });
+
+
+// para dejarlo mas limpio y ordenado, se crea el archivo empleados.controller, se hace el require y se llama aqui
+router.get('/empleados', getEmpleados);
   
-router.post('/empleados', function(req, res, next) {
-    res.send('Creando empleados');
-});
+router.post('/empleados', createEmpleados);
 
-router.put('/empleados', function(req, res, next) {
-    res.send('Actualizando empleados');
-});
+router.put('/empleados', updateEmpleados)
 
-router.delete('/empleados', function(req, res, next) {
-    res.send('Eliminando empleados');
-});
+router.delete('/empleados', deleteEmpleados)
 
 module.exports = router;
