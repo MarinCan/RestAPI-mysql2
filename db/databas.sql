@@ -10,5 +10,9 @@ CREATE TABLE employee (
 
 -- DESCRIBE employee;
 
-INSERT INTO employee() 
-VALUES ("");
+INSERT INTO employee VALUES 
+(1, 'Santi', 1500),
+(2, 'Ismael', 950),
+(3, 'Andres', 1200),
+(4, 'German', 1000),
+(5, 'Luis', 2000)
