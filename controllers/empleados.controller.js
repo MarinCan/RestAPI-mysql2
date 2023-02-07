@@ -7,11 +7,20 @@ const getEmpleados = async (req, res, next) => {
 
 const getEmpleado = async (req, res) => {
 
-    // console.log(req.params.id)
-    const [rows] = await pool.query('SELECT * from employee WHERE id = ?', [req.params.id])  // <-- [req.params.id] para evitar inyecciones sql
-    // console.log(rows)
+    // throw new Error('Mi error')
 
-    if (rows.length <= 0){   // if ( not rows )
+    try{
+        // console.log(req.params.id)
+        const [rows] = await pool.query('SELECT * from employee WHERE id = ?', [req.params.id])  // <-- [req.params.id] para evitar inyecciones sql
+        // console.log(rows)
+    } catch(error) {
+        return res.status(500).json({
+            message: 'Something was wrong! status 500'
+        })
+    }
+
+    if (rows.length <= 0){   
+        // = if ( not rows )
         return res.status(400).json({
             message: "El empleado no existe o no se ha encontrado"
         })
@@ -21,11 +30,17 @@ const getEmpleado = async (req, res) => {
 }
 
 const createEmpleado = async (req, res, next) => {
-    const {name, salary} = req.body 
-    // console.log(req.body)
-    // console.log(name, salary)
 
-    const [rows] = await pool.query('INSERT INTO employee (name, salary) VALUES (?, ?)', [name, salary])
+    try{
+        const {name, salary} = req.body 
+        // console.log(req.body)
+        // console.log(name, salary)
+        const [rows] = await pool.query('INSERT INTO employee (name, salary) VALUES (?, ?)', [name, salary])
+    } catch(error) {
+        return res.status(500).json({
+            message: 'Something was wrong! status 500'
+        })
+    }
 
     // res.send({rows})
     res.send({
@@ -37,12 +52,18 @@ const createEmpleado = async (req, res, next) => {
 
 const updateEmpleado = async (req, res, next) => {
 
-    const { id } = req.params 
-    const { name, salary } = req.body
-    console.log(id, name, salary)
+    try{
+        const { id } = req.params 
+        const { name, salary } = req.body
+        console.log(id, name, salary)
 
-    const [result] = await pool.query('UPDATE employee SET name = IFNULL(?, name), salary = IFNULL(?, salary) WHERE id = ?', [name, salary, id])
-    console.log(result)
+        const [result] = await pool.query('UPDATE employee SET name = IFNULL(?, name), salary = IFNULL(?, salary) WHERE id = ?', [name, salary, id])
+        console.log(result)
+    } catch(error) {
+        return res.status(500).json({
+            message: 'Something was wrong! status 500'
+        })
+    }
 
     if (result.affectedRows === 0) {
         return res.status(400).json({
@@ -56,8 +77,15 @@ const updateEmpleado = async (req, res, next) => {
 }
 
 const deleteEmpleado = async (req, res, next) => {
-    const [result] = await pool.query('DELETE FROM employee WHERE id = ?', [req.params.id])
-    console.log(result)
+
+    try{
+        const [result] = await pool.query('DELETE FROM employee WHERE id = ?', [req.params.id])
+        console.log(result)
+    } catch(error) {
+        return res.status(500).json({
+            message: 'Something was wrong! status 500'
+        })
+    }
 
     if ( result.affectedRows <= 0 ){
         return res.status(400).json({
