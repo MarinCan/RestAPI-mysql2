@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db')
-const {getEmpleados, createEmpleados, updateEmpleados, deleteEmpleados} = require('../controllers/empleados.controller')
+const {getEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado} = require('../controllers/empleados.controller')
 
 
 /* GET home page. */
@@ -13,10 +13,13 @@ const {getEmpleados, createEmpleados, updateEmpleados, deleteEmpleados} = requir
 // para dejarlo mas limpio y ordenado, se crea el archivo empleados.controller, se hace el require y se llama aqui
 router.get('/empleados', getEmpleados);
   
-router.post('/empleados', createEmpleados);
+router.get('/empleados/:id', getEmpleado);
 
-router.put('/empleados', updateEmpleados)
+router.post('/empleados', createEmpleado);
 
-router.delete('/empleados', deleteEmpleados)
+// router.put('/empleados/:id', updateEmpleado)
+router.patch('/empleados/:id', updateEmpleado)  // <-- parecido al put pero puede actualizar datos individuales
+
+router.delete('/empleados/:id', deleteEmpleado)
 
 module.exports = router;
